@@ -1,17 +1,30 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
     <ion-title>
-      Tab 3
+
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content>
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
+      <ion-title size="large">Your Profiles</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+  <ion-list>
+  </ion-list>
+  <ng-container *ngIf="Profiles; else elseTemplate">
+    <ion-item button *ngFor="let profile of Profiles" class='profileCard' onclick=''>
+      <ion-title>{{profile.name}}</ion-title>
+    </ion-item>
+  </ng-container>
+  <ng-template #elseTemplate>
+    <ion-text>There were no registered profiles found.</ion-text>
+    <!-- <ion-text>Please add one...</ion-text> -->
+  </ng-template>
+  <ion-button class='addBtn' (click)='openModal()'>
+    <ion-icon name="add"></ion-icon>
+  </ion-button>
 </ion-content>

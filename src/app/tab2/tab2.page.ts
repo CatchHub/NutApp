@@ -1,12 +1,25 @@
 import { Component } from '@angular/core';
+import { Blog } from '../models/blog.model';
 
 @Component({
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
-  styleUrls: ['tab2.page.scss']
+  styleUrls: ['tab2.page.scss'],
 })
 export class Tab2Page {
-
-  constructor() {}
-
+  Blogs: Array<Blog> = [];
+  constructor() {
+    this.Blogs = [
+      {
+        title: 'Youtube',
+        link: 'https://www.youtube.com/',
+        text: 'YouTube is a global online video sharing and social media platform headquartered in San Bruno, California.',
+      },
+      {
+        title: 'Netflix',
+        link: 'https://www.netflix.com/',
+        text: 'Netflix, Inc. is an American subscription video on-demand over-the-top streaming service and production company based in Los Gatos, California.',
+      },
+    ];
+  }
 }

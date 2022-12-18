@@ -1,18 +1,39 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>
-      Tab 1
-    </ion-title>
+    <ion-title>Your Profile</ion-title>
   </ion-toolbar>
 </ion-header>
+
 
 <ion-content>
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
+      <ion-title size="large">{{selectedProfile.name}}</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <ion-button>Deneme</ion-button>
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+  <ion-item>
+    <h4 item-left>Calories to be consumed on a daily basis:</h4>
+    <div><ion-text class='center'>{{profileRec.recommendedCalorieIntake}}</ion-text></div>
+  </ion-item>
+  <ion-item>
+    <h4 item-left>Protein to be consumed on a daily basis:</h4>
+    <div item-right><ion-text class="text-center">{{profileRec.recommendedProteinIntake}}</ion-text></div>
+  </ion-item>
+  <ion-item>
+    <h4 item-left>Your BMI:</h4>
+    <div item-right><ion-text class='center'>{{profileRec.bmi}}</ion-text></div>
+  </ion-item>
+  <ion-item>
+    <h4 item-left>Acceptable BMI:</h4>
+    <div item-right><ion-text class='center'>{{profileRec.acceptableBmi}}</ion-text></div>
+  </ion-item>
+  <ion-item>
+    <h4 item-left>Body state group</h4>
+    <div item-right><ion-text>{{profileRec.bodyStateGroup}}</ion-text></div>
+  </ion-item>
+  <h4 class='centered'>Restricted Foods</h4>
+  <ion-item *ngFor="let restrictedFood of profileRec.restrictedFoods">
+    <ion-text item-left>{{restrictedFood}}</ion-text>
+  </ion-item>
 </ion-content>

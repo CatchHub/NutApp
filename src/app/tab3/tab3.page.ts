@@ -15,6 +15,7 @@ export class Tab3Page {
   Profiles: Array<Profile> = [];
 
   private profilesSub;
+
   constructor(
     private modalCtrl: ModalController,
     private route: Router,
@@ -22,9 +23,7 @@ export class Tab3Page {
     private serverServices: ExpertServicesService
   ) {
     this.serverServices.getUserInfo();
-    setTimeout(() => {
-      this.getProfileSub();
-    }, 300);
+    this.getProfileSub();
   }
   getProfileSub() {
     this.profilesSub = this.serverServices
@@ -34,8 +33,6 @@ export class Tab3Page {
       });
   }
   addProfile() {
-    console.log('deneme');
-
     this.openModal();
   }
   async openModal() {
@@ -43,5 +40,9 @@ export class Tab3Page {
   }
   selectProfile(id) {
     this.sharedDataService.changeSelectedProfile(id);
+    this.serverServices.getRecommendation(id);
   }
+  // getProfiles() {
+  //   this.Profiles = this.serverServices.getProfiles();
+  // }
 }

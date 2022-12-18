@@ -5,12 +5,14 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class SharedDataService {
-  constructor() {}
   public editDataDetails: any = [];
 
   private profileIDSource = new BehaviorSubject(this.editDataDetails);
 
   public selectedProfileID = this.profileIDSource.asObservable();
+  constructor() {
+    this.profileIDSource.next(1);
+  }
 
   changeSelectedProfile(_selectedProfileID) {
     this.profileIDSource.next(_selectedProfileID);

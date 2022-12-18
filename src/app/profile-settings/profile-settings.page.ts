@@ -10,13 +10,13 @@ import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { Profile } from '../models/profile.model';
 import { ExpertServicesService } from '../services/expert-services.service';
-
+import { SharedDataService } from '../shared-data-service';
 @Component({
-  selector: 'app-add-profile-page',
-  templateUrl: './add-profile-page.page.html',
-  styleUrls: ['./add-profile-page.page.scss'],
+  selector: 'app-profile-settings',
+  templateUrl: './profile-settings.page.html',
+  styleUrls: ['./profile-settings.page.scss'],
 })
-export class AddProfilePagePage implements OnInit {
+export class ProfileSettingsPage implements OnInit {
   profileForm: FormGroup;
 
   selectedDiseases: any = [];
@@ -54,24 +54,39 @@ export class AddProfilePagePage implements OnInit {
   public gender;
   public activityLevel;
   public diseaseSection;
+  selectedProfileID: any;
+  selectedProfile: Profile;
   constructor(
     private formBuilder: FormBuilder,
     private route: Router,
     private alertCtrl: AlertController,
-    private serverServices: ExpertServicesService
+    private serverServices: ExpertServicesService,
+    private sharedDataService: SharedDataService
   ) {
+    this.sharedDataService.selectedProfileID.subscribe(
+      (selectedID) => (this.selectedProfileID = selectedID)
+    );
+    this.selectedProfile = this.serverServices.getProfileByID(
+      this.selectedProfileID
+    );
     this.profileForm = this.formBuilder.group({
-      name: [undefined, Validators.required],
-      weight: [undefined, Validators.required],
-      height: [undefined, Validators.required],
-      age: [undefined, Validators.required],
-      activityLevel: [undefined, Validators.required],
-      gender: [undefined, Validators.required],
+      name: [this.selectedProfile.name, Validators.required],
+      weight: [this.selectedProfile.weight, Validators.required],
+      height: [this.selectedProfile.height, Validators.required],
+      age: [this.selectedProfile.age, Validators.required],
+      activityLevel: [this.selectedProfile.activityLevel, Validators.required],
+      gender: [this.selectedProfile.gender, Validators.required],
       diseasesArea: this.createDiseaseAreas(this.diseasesArea),
     });
   }
-  ngOnInit(): void {}
 
+  ngOnInit() {}
+
+  // denemefn(str: string) {
+  //   return false;
+  //   if (str == this.gender) return true;
+  //   else return false;
+  // }
   getSelectedExpertAreaNames() {
     this.selectedDiseases = this.profileForm.controls['diseasesArea'][
       'controls'
@@ -84,8 +99,11 @@ export class AddProfilePagePage implements OnInit {
       .filter((x) => x);
   }
   createDiseaseAreas(diseasesAreasInputs: any[]) {
+    let counter = 0;
     const arr = diseasesAreasInputs.map((diseaseA) => {
-      return new FormControl(diseaseA.selected || false);
+      return new FormControl(
+        diseaseA.selected || this.selectedProfile.diseases[counter++]
+      );
     });
     return new FormArray(arr);
   }
@@ -102,13 +120,8 @@ export class AddProfilePagePage implements OnInit {
     ) {
       this.getSelectedExpertAreaNames();
 
-      this.createNewProfile();
-      this.presentAlert(
-        'Başarılı',
-        'Profil Oluşturuldu',
-        'Yeni oluşturulan profilin diyet planını görmek için seçili profil yapmayı unutmayın.',
-        'Harika'
-      );
+      this.saveProfile();
+      this.presentAlert('Başarılı', 'Profil düzenlendi', '', 'Harika');
       this.route.navigateByUrl('/tabs/tab3');
     } else {
       this.presentAlert(
@@ -138,7 +151,7 @@ export class AddProfilePagePage implements OnInit {
     await alert.present();
   }
 
-  createNewProfile() {
+  saveProfile() {
     let profile = new Profile(
       this.profileForm.controls['name'].value,
       this.profileForm.controls['weight'].value,
@@ -147,9 +160,9 @@ export class AddProfilePagePage implements OnInit {
       this.profileForm.controls['age'].value,
       this.profileForm.controls['activityLevel'].value,
       this.profileForm.controls['diseasesArea'].value,
-      0
+      this.selectedProfile.id
     );
-    this.serverServices.postUserInfo(profile);
+    this.serverServices.alterUserInfo(profile);
     console.log(profile);
   }
 
@@ -158,4 +171,5 @@ export class AddProfilePagePage implements OnInit {
       window.location.reload();
     }, 1500);
   }
+  clickedProfile() {}
 }

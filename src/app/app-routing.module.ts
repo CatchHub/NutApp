@@ -9,6 +9,10 @@ const routes: Routes = [
   {
     path: 'add-profile-page',
     loadChildren: () => import('./add-profile-page/add-profile-page.module').then( m => m.AddProfilePagePageModule)
+  },
+  {
+    path: 'profile-settings',
+    loadChildren: () => import('./profile-settings/profile-settings.module').then( m => m.ProfileSettingsPageModule)
   }
 ];
 @NgModule({

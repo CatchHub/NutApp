@@ -6,6 +6,7 @@ export class Profile {
   age: number;
   activityLevel: string;
   diseases: Array<boolean> = [false, false, false, false, false, false, false];
+  id: number;
 
   constructor(
     name: string,
@@ -14,8 +15,10 @@ export class Profile {
     gender: string,
     age: number,
     activityLevel: string,
-    diseases: Array<boolean>
+    diseases: Array<boolean>,
+    id: number
   ) {
+    this.id = id;
     this.name = name;
     this.weight = weight;
     this.height = height;
